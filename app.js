@@ -5,10 +5,12 @@ import multer from "multer";
 import { uploadImage, deleteImage, updateImage } from "./routes/routes.js";
 import { initializeSupabase } from "./utils/init.js";
 import * as dotenv from "dotenv";
+import helmet from "helmet";
 dotenv.config();
 
 const app = express();
 app.use(cors());
+app.use(helmet());
 app.use(bodParser.json());
 
 const fileFilter = (req, file, cb) => {
@@ -38,4 +40,7 @@ app.use((errors, req, res, next) => {
   console.log(errors);
   res.status(500).json({ errors });
 });
-app.listen(3000, () => console.log("Server listening on port 3000"));
+const PORT = process.env.PORT;
+app.listen(PORT || 3000, () =>
+  console.log(`Server listening on port ${PORT || 3000}`)
+);
